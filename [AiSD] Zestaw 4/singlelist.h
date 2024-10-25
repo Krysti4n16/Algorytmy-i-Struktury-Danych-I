@@ -33,8 +33,16 @@ public:
     std::size_t size() const;// O(n) bo trzeba policzyc
     void push_front(const T& item); // O(1), L.push_front(item)
     void push_back(const T& item); // O(1), L.push_back(item)
-    T& front() const { return head->value; } // zwraca poczatek, nie usuwa
-    T& back() const { return tail->value; } // zwraca koniec, nie usuwa
+
+    T& front() const { 
+        assert(!empty());
+        return head->value; 
+        } // zwraca poczatek, nie usuwa
+
+    T& back() const { 
+        assert(!empty());
+        return tail->value; 
+        } // zwraca koniec, nie usuwa
     void pop_front(); // usuwa poczatek O(1)
     void pop_back(); // usuwa koniec O(n)
     void clear();// czyszczenie listy z elementow O(n)
@@ -43,12 +51,12 @@ public:
 };
 
 template <typename T>
-SingleList<T>::~SingleList() {
+SingleList<T>::~SingleList(){
     clear();
 }
 
 template <typename T>
-void SingleList<T>::push_front(const T& item) {
+void SingleList<T>::push_front(const T& item){
     if (!empty()) {
         head = new SingleNode<T>(item, head);
     } else {
@@ -57,7 +65,7 @@ void SingleList<T>::push_front(const T& item) {
 }
 
 template <typename T>
-void SingleList<T>::push_back(const T& item) {
+void SingleList<T>::push_back(const T& item){
     if (!empty()) {
         tail->next = new SingleNode<T>(item);
         tail = tail->next;
@@ -67,7 +75,7 @@ void SingleList<T>::push_back(const T& item) {
 }
 
 template <typename T>
-void SingleList<T>::display() {
+void SingleList<T>::display(){
     SingleNode<T> *node = head;
     while (node != nullptr){
         std::cout << node->value << " ";
@@ -77,7 +85,7 @@ void SingleList<T>::display() {
 }
 
 template <typename T>
-void SingleList<T>::pop_front() {
+void SingleList<T>::pop_front(){
     assert(!empty());
     SingleNode<T> *node = head; // zapamietujemy
     if (head == tail) { // jeden wezel na liscie
@@ -89,7 +97,7 @@ void SingleList<T>::pop_front() {
 }
 
 template <typename T>
-void SingleList<T>::pop_back() {
+void SingleList<T>::pop_back(){
     assert(!empty());
     SingleNode<T> *node = tail; // zapamietujemy
     if (head == tail) { // jeden wezel na liscie
@@ -112,13 +120,13 @@ std::size_t SingleList<T>::size() const{
         return 0;
     }
     else{
-    size_t size=0;
-    SingleNode<T> *node=head;
-    while(node != nullptr){
-        node=node->next;
-        size++;
-        }
-    return size;
+        size_t size=0;
+        SingleNode<T> *node=head;
+        while(node != nullptr){
+            node=node->next;
+            size++;
+            }
+        return size;
     }
 }
 
@@ -150,7 +158,7 @@ void SingleList<T>::reverse(){
 template<typename T>
 SingleList<T>::SingleList(const SingleList& other) :head(nullptr), tail(nullptr){
     SingleNode<T> *obecny=other.head;
-    while(obecny != nullptr) {
+    while(obecny != nullptr){
         push_back(obecny->value);
         obecny=obecny->next;
     }
