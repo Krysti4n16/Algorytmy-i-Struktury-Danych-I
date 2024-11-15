@@ -65,33 +65,39 @@ void testONP(){
 
     std::cout << "Test ONP..." << std::endl;
     
+    std::cout << "test operatora +..." << std::endl;
     std::vector<std::string> input1 { "2", "3", "+" };
     assert(ONP(input1) == 5);
 
+    std::cout << "test operatora -..." << std::endl;
     std::vector<std::string> input2 { "10", "4", "-" };
     assert(ONP(input2) == 6);
 
+    std::cout << "test operatora *..." << std::endl;
     std::vector<std::string> input3 { "7", "8", "*" };
     assert(ONP(input3) == 56);
 
+    std::cout << "test operatora /..." << std::endl;
     std::vector<std::string> input4 { "9", "3", "/" };
     assert(ONP(input4) == 3);
 
-    //dzielenie przez zero
+    std::cout << "test dzielenia przez 0..." << std::endl;
     std::vector<std::string> input5 { "10", "0", "/" };
     assert(ONP(input5) == -1);
 
-    //zbyt malo argumentow
+    std::cout << "test operatora zbyt malej liczby argumentow..." << std::endl;
     std::vector<std::string> input6 { "+" };
     assert(ONP(input6) == -1);
 
-    //zbyt wiele liczb
+    std::cout << "test operatora zbyt duzej liczby wartosci..." << std::endl;
     std::vector<std::string> input7 { "3", "4", "5", "+" };
     assert(ONP(input7) == -1);
 
+    std::cout << "test dla liczby ujemnej..." << std::endl;
     std::vector<std::string> input8 { "-6", "2", "+" };
     assert(ONP(input8) == -4);
 
+    std::cout << "test zlozonego wyrazenia ONP..." << std::endl;
     std::vector<std::string> input9 { "12", "2", "3", "4", "*", "10", "5", "/", "+", "*", "+"};
     assert(ONP(input9) == 40);
 
