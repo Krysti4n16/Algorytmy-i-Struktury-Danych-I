@@ -2,43 +2,38 @@
 #include <fstream>
 #include <string>
 #include <ctime>
-//#include <windows.h>
+#include <windows.h>
 #include <vector>
 
-
-
-using namespace std;
-
-
 void StronaStartowa() {
-    cout << "************************************************************" << endl;
-    cout << "*                  Sklep Wedkarski \"Barwena\"               *" << endl;
-    cout << "*              Projekt obiektowej aplikacji C++            *" << endl;
-    cout << "*       											        *" << endl;
-    cout << "************************************************************" << endl;
-    
-	
-	//Sleep(2000);
+    std::cout << "************************************************************" << std::endl;
+    std::cout << "*                  Sklep Wedkarski \"Barwena\"             *" << std::endl;
+    std::cout << "*              Projekt obiektowej aplikacji C++            *" << std::endl;
+    std::cout << "*       											         *" << std::endl;
+    std::cout << "************************************************************" << std::endl;
+
+
+    Sleep(2000);
     system("cls");
 }
 
-void wyswietl_kategorie(){
-	cout<<"Wybierz kategorie produktu: "<<endl;
-    cout<<"1. Wedki"<<endl;
-    cout<<"2. Kolowrotki"<<endl;
-    cout<<"3. Przynety"<<endl;
-    cout<<"4. Splawiki"<<endl;
-    cout<<"5. Zylki i plecionki"<<endl;
-    cout<<"6. Akcesoria"<<endl<<"Wybor: "<<endl;
-    
+void wyswietl_kategorie() {
+    std::cout << "Wybierz kategorie produktu: " << std::endl;
+    std::cout << "1. Wedki" << std::endl;
+    std::cout << "2. Kolowrotki" << std::endl;
+    std::cout << "3. Przynety" << std::endl;
+    std::cout << "4. Splawiki" << std::endl;
+    std::cout << "5. Zylki i plecionki" << std::endl;
+    std::cout << "6. Akcesoria" << std::endl << "Wybor: " << std::endl;
+
 }
 
 
 
-class Produkt{
-public: 
+class Produkt {
+public:
     virtual void wyswietl() = 0;
-	virtual double pobierzCene() const = 0;
+    virtual double pobierzCene() const = 0;
     virtual ~Produkt() = default;
 };
 
@@ -46,34 +41,34 @@ public:
 
 class SklepWedkarski {
 public:
-	
-    void pokaz(Produkt* produkt){
+
+    void pokaz(Produkt* produkt) {
         produkt->wyswietl();
     }
-    
+
 };
 
-class Wedka :public Produkt{
+class Wedka :public Produkt {
 public:
-    
-    Wedka(string n, double c, string p): nazwa(n), cena(c), parametr(p) {}
+
+    Wedka(std::string n, double c, std::string p) : nazwa(n), cena(c), parametr(p) {}
     Wedka() : nazwa("brak"), cena(0.0), parametr("brak") {}
-    
+
     void wyswietl() override {
-        cout<<"Nazwa: "<<nazwa<<" Cena"<<cena<<" Dlugosc:"<<parametr<<" m"<<endl;
+        std::cout << "Nazwa: " << nazwa << " Cena" << cena << " Dlugosc:" << parametr << " m" << std::endl;
     }
-    string nazwa;
+    std::string nazwa;
     double cena;
-    string parametr;
-    
-        void ustaw(string naz, double cen, string par)
+    std::string parametr;
+
+    void ustaw(std::string naz, double cen, std::string par)
     {
-    	nazwa=naz;
-    	cena=cen;
-    	parametr=par;
-	}
-	
-	 double pobierzCene() const {
+        nazwa = naz;
+        cena = cen;
+        parametr = par;
+    }
+
+    double pobierzCene() const {
         return cena;
     }
 };
@@ -97,7 +92,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const{
+    double pobierzCene() const {
         return cena;
     }
 
@@ -154,7 +149,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const  {
+    double pobierzCene() const {
         return cena;
     }
 
@@ -181,7 +176,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const  {
+    double pobierzCene() const {
         return cena;
     }
 
@@ -249,12 +244,15 @@ private:
         return koszt;
     }
 
-    std::string czasAktualny() const {
-        std::time_t teraz = std::time(0);
-        std::tm* czasTeraz = std::localtime(&teraz);
+    std::string czasAktualny() {
+        std::time_t teraz = std::time(nullptr);
+        std::tm czasTeraz;
+        localtime_s(&czasTeraz, &teraz);
+        
         char czasChar[80];
-        std::strftime(czasChar, 80, "%Y-%m-%d %H:%M:%S", czasTeraz);
-        return czasChar;
+        std::strftime(czasChar, sizeof(czasChar), "%Y-%m-%d %H:%M:%S", &czasTeraz);
+
+        return std::string(czasChar);
     }
 
 public:
@@ -270,6 +268,7 @@ public:
         raport << "---------------------------------------------" << std::endl;
 
         std::cout << "Kupione produkty: " << std::endl;
+        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
         for (Produkt* produkt : koszyk.getProdukty()) {
             produkt->wyswietl();
             std::cout << std::endl;
@@ -283,169 +282,174 @@ public:
 };
 
 int main() {
-	
-	StronaStartowa();
-	
+
+    StronaStartowa();
+
     SklepWedkarski sklep;
     Kup kupowanie;
-    
+
     Wedka wedki[5]; int wedkii = 0;
-    Kolowrotek kolowrotki[5]; int kolowrotkii=0;
-   	Przyneta przynety[7]; int przynetyi=0;
-    Splawik splawiki[6]; int splawikii=0;
-    Zylka zylki[6]; int zylkii=0;
-	Akcesoria akcesor[9]; int akcesori=0;
-	
-	
-	string n, p;
-	int c,kategoria;
-	
-	
-	ifstream plik_wejsciowy("produkty.txt");
-	
+    Kolowrotek kolowrotki[5]; int kolowrotkii = 0;
+    Przyneta przynety[7]; int przynetyi = 0;
+    Splawik splawiki[6]; int splawikii = 0;
+    Zylka zylki[6]; int zylkii = 0;
+    Akcesoria akcesor[9]; int akcesori = 0;
+
+
+    std::string n, p;
+    int c, kategoria;
+
+
+    std::ifstream plik_wejsciowy("produkty.txt");
+
     while (plik_wejsciowy >> n >> c >> p >> kategoria)
-	{
-	 	
-	 	//cout<<n<<" "<<c<<" "<<p<<" "<<kategoria<<endl;
-	 	
-        switch (kategoria) {
-    case 1:
-        wedki[wedkii].ustaw(n, c, p);
-        wedkii++;
-        break;
-
-    case 2:
-        kolowrotki[kolowrotkii].ustaw(n, c, p);
-        kolowrotkii++;
-        break;
-
-    case 3:
-        przynety[przynetyi].ustaw(n, c, p);
-        przynetyi++;
-        break;
-
-    case 4:
-        splawiki[splawikii].ustaw(n, c, p);
-        splawikii++;
-        break;
-
-    case 5:
-        zylki[zylkii].ustaw(n, c, p);
-        zylkii++;
-        break;
-
-    case 6:
-        akcesor[akcesori].ustaw(n, c, p);
-        akcesori++;
-        break;
-
-    default:
-        // Obsługa sytuacji, gdy kategoria jest nieznana
-        break;
-    }
-        
-}
-    int koniec_zakupow=0;
-    
-    while(!koniec_zakupow)
     {
-	
-    wyswietl_kategorie();
-    
-    cin>>kategoria;
-    
-    system("cls");
-    
-    
-    if (kategoria == 1) {
-            
-            for(int i=0;i<=(wedkii-1);i++)
-            {
-            	cout<<" "<< i<<".  ";
-            	wedki[i].wyswietl();
-			}
-			
-			int wybieranie=-1;
-			cout<<"Ktory prokdukt dodac do koszyka: "<<endl;
-			cin>>wybieranie;
-			kupowanie.dodajProduktDoKoszyka(&wedki[wybieranie]);
-            
-        } else if (kategoria == 2) {
-            
-            for(int i=0;i<=(kolowrotkii-1);i++)
-            {
-            	cout<<" " <<i<<".  ";
-            	kolowrotki[i].wyswietl();
 
-			}
-			
-			int wybieranie=-1;
-			cout<<"Ktory prokdukt dodac do koszyka: "<<endl;
-			cin>>wybieranie;
-			kupowanie.dodajProduktDoKoszyka(&kolowrotki[wybieranie]);
-            
-        } else if (kategoria == 3) {
-            
-        for(int i=0;i<=(przynetyi-1);i++)
+        //cout<<n<<" "<<c<<" "<<p<<" "<<kategoria<<endl;
+
+        switch (kategoria) {
+        case 1:
+            wedki[wedkii].ustaw(n, c, p);
+            wedkii++;
+            break;
+
+        case 2:
+            kolowrotki[kolowrotkii].ustaw(n, c, p);
+            kolowrotkii++;
+            break;
+
+        case 3:
+            przynety[przynetyi].ustaw(n, c, p);
+            przynetyi++;
+            break;
+
+        case 4:
+            splawiki[splawikii].ustaw(n, c, p);
+            splawikii++;
+            break;
+
+        case 5:
+            zylki[zylkii].ustaw(n, c, p);
+            zylkii++;
+            break;
+
+        case 6:
+            akcesor[akcesori].ustaw(n, c, p);
+            akcesori++;
+            break;
+
+        default:
+            // Obsługa sytuacji, gdy kategoria jest nieznana
+            break;
+        }
+
+    }
+    int koniec_zakupow = 0;
+
+    while (!koniec_zakupow)
+    {
+
+        wyswietl_kategorie();
+
+        std::cin >> kategoria;
+
+        system("cls");
+
+
+        if (kategoria == 1) {
+            std::cout << "-----------------------------------------" << std::endl;
+            for (int i = 0; i < wedkii; i++)
             {
-            	cout<<" "<< i<<".  ";
-            	przynety[i].wyswietl();
-			}  
-			
-			int wybieranie=-1;
-			cout<<"Ktory prokdukt dodac do koszyka: "<<endl;
-			cin>>wybieranie;
-			kupowanie.dodajProduktDoKoszyka(&przynety[wybieranie]);  
-            
-        } else if (kategoria == 4) {
-          
-            for(int i=0;i<=(splawikii-1);i++)
+                std::cout << " " << i+1 << ".  ";
+                wedki[i].wyswietl();
+            }
+            std::cout << "-----------------------------------------" << std::endl;
+            int wybieranie = -1;
+            std::cout << "Ktory prokdukt dodac do koszyka: " << std::endl;
+            std::cin >> wybieranie;
+            kupowanie.dodajProduktDoKoszyka(&wedki[wybieranie-1]);
+
+        }
+        else if (kategoria == 2) {
+            std::cout << "-----------------------------------------" << std::endl;
+            for (int i = 0; i < kolowrotkii; i++)
             {
-            	cout<<" "<< i<<".  ";
-            	splawiki[i].wyswietl();
-			}
-			
-			int wybieranie=-1;
-			cout<<"Ktory prokdukt dodac do koszyka: "<<endl;
-			cin>>wybieranie;
-			kupowanie.dodajProduktDoKoszyka(&splawiki[wybieranie]);
-            
-        } else if (kategoria == 5) {
-            
-          for(int i=0;i<=(zylkii-1);i++)
+                std::cout << " " << i+1 << ".  ";
+                kolowrotki[i].wyswietl();
+
+            }
+            std::cout << "-----------------------------------------" << std::endl;
+            int wybieranie = -1;
+            std::cout << "Ktory prokdukt dodac do koszyka: " << std::endl;
+            std::cin >> wybieranie;
+            kupowanie.dodajProduktDoKoszyka(&kolowrotki[wybieranie-1]);
+
+        }
+        else if (kategoria == 3) {
+            std::cout << "-----------------------------------------" << std::endl;
+            for (int i = 0; i <przynetyi; i++)
             {
-            	cout<<" "<< i<<".  ";
-            	zylki[i].wyswietl();
-			}  
-			
-			int wybieranie=-1;
-			cout<<"Ktory prokdukt dodac do koszyka: "<<endl;
-			cin>>wybieranie;
-			kupowanie.dodajProduktDoKoszyka(&zylki[wybieranie]);
-            
-        } else if (kategoria == 6) {
-            
-            for(int i=0;i<=(akcesori-1);i++)
+                std::cout << " " << i+1 << ".  ";
+                przynety[i].wyswietl();
+            }
+            std::cout << "-----------------------------------------" << std::endl;
+            int wybieranie = -1;
+            std::cout << "Ktory prokdukt dodac do koszyka: " << std::endl;
+            std::cin >> wybieranie;
+            kupowanie.dodajProduktDoKoszyka(&przynety[wybieranie-1]);
+
+        }
+        else if (kategoria == 4) {
+            std::cout << "-----------------------------------------" << std::endl;
+            for (int i = 0; i <splawikii; i++)
             {
-            	cout<<" "<< i<<".  ";
-            	akcesor[i].wyswietl();
-			}
-			
-			int wybieranie=-1;
-			cout<<"Ktory prokdukt dodac do koszyka: "<<endl;
-			cin>>wybieranie;
-			kupowanie.dodajProduktDoKoszyka(&akcesor[wybieranie]);
+                std::cout << " " << i+1 << ".  ";
+                splawiki[i].wyswietl();
+            }
+            std::cout << "-----------------------------------------" << std::endl;
+            int wybieranie = -1;
+            std::cout << "Ktory prokdukt dodac do koszyka: " << std::endl;
+            std::cin >> wybieranie;
+            kupowanie.dodajProduktDoKoszyka(&splawiki[wybieranie-1]);
+
+        }
+        else if (kategoria == 5) {
+            std::cout << "-----------------------------------------" << std::endl;
+            for (int i = 0; i <zylkii; i++)
+            {
+                std::cout << " " << i+1 << ".  ";
+                zylki[i].wyswietl();
+            }
+            std::cout << "-----------------------------------------" << std::endl;
+            int wybieranie = -1;
+            std::cout << "Ktory prokdukt dodac do koszyka: " << std::endl;
+            std::cin >> wybieranie;
+            kupowanie.dodajProduktDoKoszyka(&zylki[wybieranie-1]);
+
+        }
+        else if (kategoria == 6) {
+            std::cout << "-----------------------------------------" << std::endl;
+            for (int i = 0; i <akcesori; i++)
+            {
+                std::cout << " " << i+1 << ".  ";
+                akcesor[i].wyswietl();
+            }
+            std::cout << "-----------------------------------------" << std::endl;
+            int wybieranie = -1;
+            std::cout << "Ktory prokdukt dodac do koszyka: " << std::endl;
+            std::cin >> wybieranie;
+            kupowanie.dodajProduktDoKoszyka(&akcesor[wybieranie-1]);
         }
 
 
-    cout<<"Jesli chcesz zakonczyc zakupy wybierz 1, aby kontynuowac wybierz 0"<<endl;
-    cin>>koniec_zakupow;
-    
-    system("cls");
-    
-    
-}
-	kupowanie.dokonajZakupu();
+        std::cout << "Jesli chcesz zakonczyc zakupy wybierz 1, aby kontynuowac wybierz 0" << std::endl;
+        std::cin >> koniec_zakupow;
+
+        system("cls");
+
+
+    }
+    kupowanie.dokonajZakupu();
     plik_wejsciowy.close();
     return 0;
 }
