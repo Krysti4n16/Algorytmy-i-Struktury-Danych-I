@@ -25,8 +25,9 @@ void wyswietl_kategorie() {
     std::cout << "3. Przynety" << std::endl;
     std::cout << "4. Splawiki" << std::endl;
     std::cout << "5. Zylki i plecionki" << std::endl;
-    std::cout << "6. Akcesoria" << std::endl << "Wybor: " << std::endl;
-
+    std::cout << "6. Akcesoria" << std::endl;
+    std::cout << "7. Wyswietl koszyk" << std::endl;
+    std::cout << "8. Zakoncz zakupy" << std::endl << "Wybor: " << std::endl;
 }
 
 
@@ -281,6 +282,19 @@ public:
         raport.close();
         koszyk.wyczyscKoszyk();
     }
+
+    void wyswietlKoszyk() {
+        if (koszyk.getProdukty().empty()) {
+            std::cout << "Koszyk jest pusty" << std::endl;
+        } 
+        else {
+            std::cout << "Zawartosc koszyka:" << std::endl;
+            for (Produkt* produkt : koszyk.getProdukty()) {
+                produkt->wyswietl();
+            }
+            std::cout << "Laczna kwota: " << koszykowyKoszt() << " PLN" << std::endl;
+        }
+    }
 };
 
 int main() {
@@ -356,7 +370,6 @@ int main() {
         std::cin >> kategoria;
 
         system("clear");
-
 
         if (kategoria == 1) {
             std::cout << "-----------------------------------------" << std::endl;
@@ -442,10 +455,17 @@ int main() {
             std::cin >> wybieranie;
             kupowanie.dodajProduktDoKoszyka(&akcesor[wybieranie-1]);
         }
+    
+        else if (kategoria == 7) {
+            kupowanie.wyswietlKoszyk();
+            std::cout << "Nacisnij Enter, aby kontynuować...";
+            std::cin.ignore();
+            std::cin.get();
+        }
 
-
-        std::cout << "Jesli chcesz zakonczyc zakupy wybierz 1, aby kontynuowac wybierz 0" << std::endl;
-        std::cin >> koniec_zakupow;
+        else if (kategoria == 8) {
+            koniec_zakupow = 1;
+        }
 
         system("clear");
 
