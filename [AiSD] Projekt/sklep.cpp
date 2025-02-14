@@ -2,8 +2,9 @@
 #include <fstream>
 #include <string>
 #include <ctime>
-#include <windows.h>
 #include <vector>
+#include <thread>
+#include <chrono>
 
 void StronaStartowa() {
     std::cout << "************************************************************" << std::endl;
@@ -13,8 +14,8 @@ void StronaStartowa() {
     std::cout << "************************************************************" << std::endl;
 
 
-    Sleep(2000);
-    system("cls");
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    system("clear");
 }
 
 void wyswietl_kategorie() {
@@ -39,14 +40,14 @@ public:
 
 
 
-class SklepWedkarski {
+/*class SklepWedkarski {
 public:
 
     void pokaz(Produkt* produkt) {
         produkt->wyswietl();
     }
 
-};
+};*/
 
 class Wedka :public Produkt {
 public:
@@ -68,7 +69,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const {
+    double pobierzCene() const override{
         return cena;
     }
 };
@@ -92,7 +93,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const {
+    double pobierzCene() const override{
         return cena;
     }
 
@@ -121,7 +122,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const {
+    double pobierzCene() const override{
         return cena;
     }
 
@@ -149,7 +150,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const {
+    double pobierzCene() const override{
         return cena;
     }
 
@@ -176,7 +177,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const {
+    double pobierzCene() const override{
         return cena;
     }
 
@@ -204,7 +205,7 @@ public:
         parametr = par;
     }
 
-    double pobierzCene() const {
+    double pobierzCene() const override{
         return cena;
     }
 
@@ -245,16 +246,17 @@ private:
     }
 
     std::string czasAktualny() {
-        std::time_t teraz = std::time(nullptr);
-        std::tm czasTeraz;
-        localtime_s(&czasTeraz, &teraz);
-        
-        char czasChar[80];
-        std::strftime(czasChar, sizeof(czasChar), "%Y-%m-%d %H:%M:%S", &czasTeraz);
+    std::time_t teraz = std::time(nullptr);
+    std::tm czasTeraz;
+    localtime_r(&teraz, &czasTeraz);
+    
+    char czasChar[80];
+    std::strftime(czasChar, sizeof(czasChar), "%Y-%m-%d %H:%M:%S", &czasTeraz);
 
-        return std::string(czasChar);
-    }
+    return std::string(czasChar);
+}
 
+    
 public:
     void dodajProduktDoKoszyka(Produkt* produkt) {
         koszyk.dodajProdukt(produkt);
@@ -285,7 +287,7 @@ int main() {
 
     StronaStartowa();
 
-    SklepWedkarski sklep;
+    //SklepWedkarski sklep;
     Kup kupowanie;
 
     Wedka wedki[5]; int wedkii = 0;
@@ -353,7 +355,7 @@ int main() {
 
         std::cin >> kategoria;
 
-        system("cls");
+        system("clear");
 
 
         if (kategoria == 1) {
@@ -445,7 +447,7 @@ int main() {
         std::cout << "Jesli chcesz zakonczyc zakupy wybierz 1, aby kontynuowac wybierz 0" << std::endl;
         std::cin >> koniec_zakupow;
 
-        system("cls");
+        system("clear");
 
 
     }
